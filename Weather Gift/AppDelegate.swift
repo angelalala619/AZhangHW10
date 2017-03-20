@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Weather Gift
 //
-//  Created by Angela Zhang on 7/28/2013.
+//  Created by Angela Zhang on 3/6/17.
 //  Copyright © 2017 Angela Zhang. All rights reserved.
 //
 
