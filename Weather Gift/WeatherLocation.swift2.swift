@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class PageVC: UIPageViewController {
     var currentPage = 0
     var locationsArray = [WeatherLocation]()
@@ -18,8 +19,8 @@ class PageVC: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        delegate = self
-        dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
         
         let newLocation = WeatherLocation()
         newLocation.name = "Unknown Weather Location"
@@ -76,12 +77,12 @@ class PageVC: UIPageViewController {
     }
     
     @IBAction func unwindFromListVC(_ sender: UIStoryboardSegue) {
-        pageControl.numberOfPages = locationsArray.count 
+        pageControl.numberOfPages = locationsArray.count
         pageControl.currentPage = currentPage
         setViewControllers([createDetailVC(forPage: currentPage)], direction: .forward, animated: false, completion: nil)
     }
-
-
+    
+    
     // MARK: - Create View Controller for UIPageViewController
     func createDetailVC(forPage page: Int) -> DetailVC {
         
@@ -93,7 +94,7 @@ class PageVC: UIPageViewController {
         detailVC.currentPage = currentPage
         
         return detailVC
-
+        
     }
 }
 
@@ -137,5 +138,5 @@ extension PageVC: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
             }
         }
         
-        }
     }
+}
