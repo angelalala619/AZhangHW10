@@ -21,12 +21,12 @@ class ListVC: UIViewController {
     
     
     override func viewDidLoad() {
-        print("A")
+       
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
-        print("B")
+       
     }
     //MARK: - Segues
     
@@ -59,6 +59,13 @@ class ListVC: UIViewController {
         autocompleteController.delegate = self
         present(autocompleteController, animated: true, completion: nil)
     }
+    func saveUserDefaults() {
+        var locationsDefaultsArray = [WeatherUserDefault] ()
+        locationsDefaultsArray = locationsArray
+        let locationsData = NSKeyedArchiver.archivedData(withRootObject: locationsDefaultsArray)
+        UserDefaults.standard.set(locationsData, forKey: "locationsData")
+        
+    }
 }
 
 extension ListVC: UITableViewDataSource, UITableViewDelegate {
@@ -81,6 +88,7 @@ extension ListVC: UITableViewDataSource, UITableViewDelegate {
         if editingStyle == .delete {
             locationsArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            saveUserDefaults()
             
         }
         
@@ -93,6 +101,8 @@ extension ListVC: UITableViewDataSource, UITableViewDelegate {
         locationsArray.remove(at:sourceIndexPath.row)
         //Insert item into the "to", post-move, location
         locationsArray.insert(itemToMove, at: destinationIndexPath.row)
+        
+        saveUserDefaults()
     }
     
     //MARK: - TableView Code to Freeze the first cell
@@ -122,9 +132,9 @@ extension ListVC: UITableViewDataSource, UITableViewDelegate {
         let lat = place.coordinate.latitude
         let long = place.coordinate.longitude
         newLocation.coordinates = "\(lat),\(long)"
-        print(newLocation.coordinates)
         locationsArray.append(newLocation)
         tableView.reloadData()
+        saveUserDefaults()
         
     }
 }
@@ -139,7 +149,6 @@ extension ListVC: GMSAutocompleteViewControllerDelegate {
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
         // TODO: handle the error.
-        print("Error: ", error.localizedDescription)
     }
     
     // User canceled the operation.
